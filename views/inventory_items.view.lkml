@@ -77,6 +77,32 @@ view: inventory_items {
     type: count
     drill_fields: [id, products.id, products.item_name, order_items.count]
   }
-}
+  parameter: metric_selector {
+    type: string
+    allowed_value: {
+    label: "Average cost"
+    value: "average_cost"
+    }
+    allowed_value: {
+      label: "Total cost"
+      value: "total_cost"
+    }
+    allowed_value: {
+      label: "Count"
+      value: "count"
+    }
+  }
 
-#prueba
+  measure: metric {
+    label_from_parameter: metric_selector
+    label: "Metric Selector"
+    type: number
+    sql:
+      CASE
+      WHEN {% parameter metric_selector %} = 'average_cost' THEN ${average_cost}
+      WHEN {% parameter metric_selector %} = 'total_cost' THEN ${total_cost}
+      WHEN {% parameter metric_selector %} = 'count' THEN ${count}
+      ELSE NULL
+    END ;;
+  }
+}

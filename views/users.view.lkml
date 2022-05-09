@@ -110,4 +110,5 @@ view: users {
     type: count
     drill_fields: [id, first_name, last_name, orders.count]
   }
+
 }

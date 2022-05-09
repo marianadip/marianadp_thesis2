@@ -88,4 +88,35 @@ view: order_items {
     type: count
     drill_fields: [id, orders.id, inventory_items.id]
   }
+
+  parameter: metric_selector {
+    type: string
+    allowed_value: {
+      label: "Total Gross Margin"
+      value: "total_gross_margin"
+    }
+    allowed_value: {
+      label: "Total sale price"
+      value: "total_sale_price"
+    }
+    allowed_value: {
+      label: "Total gross margin percentage"
+      value: "total_gross_margin_percentage"
+    }
+  }
+
+  measure: metric {
+    label_from_parameter: metric_selector
+    label: "Totals metric"
+    type: number
+    #value_format: "$0.0,\"K\""
+    sql:
+      CASE
+      WHEN {% parameter metric_selector %} = 'total_gross_margin' THEN ${total_gross_margin}
+      WHEN {% parameter metric_selector %} = 'total_sale_price' THEN ${total_sale_price}
+      WHEN {% parameter metric_selector %} = 'total_gross_margin_percentage' THEN ${total_gross_margin_percentage}
+      ELSE NULL
+    END ;;
+  }
+
 }
