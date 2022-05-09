@@ -29,8 +29,27 @@ view: order_items {
     sql: ${TABLE}.order_id ;;
   }
 
+  dimension: gross_margin {
+    type: number
+    value_format_name: usd
+    sql: ${sale_price} - ${inventory_items.cost} ;;
+  }
   # Dates and timestamps can be represented in Looker using a dimension group of type: time.
   # Looker converts dates and timestamps to the specified timeframes within the dimension group.
+
+  measure: total_gross_margin {
+    label: "Total Gross Margin"
+    type: sum
+    value_format_name: usd
+    sql: ${gross_margin} ;;
+  }
+
+  measure: total_gross_margin_percentage {
+    type: number
+    value_format_name: percent_2
+    sql: 1.0 * ${total_gross_margin}/ NULLIF(${total_sale_price},0) ;;
+  }
+
 
   dimension_group: returned {
     type: time

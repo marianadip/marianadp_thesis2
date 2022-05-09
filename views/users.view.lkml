@@ -49,7 +49,14 @@ view: users {
 
   # Dates and timestamps can be represented in Looker using a dimension group of type: time.
   # Looker converts dates and timestamps to the specified timeframes within the dimension group.
+  parameter: max_rank {
+    type: number
+  }
 
+  dimension: rank_limit {
+    type: number
+    sql: {% parameter max_rank %} ;;
+  }
   dimension_group: created {
     type: time
     timeframes: [

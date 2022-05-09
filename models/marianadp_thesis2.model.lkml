@@ -22,6 +22,7 @@ persist_with: marianadp_thesis2_default_datagroup
 # To see the Explore you’re building, navigate to the Explore menu and select an Explore under "Marianadp Thesis2"
 
 explore: inventory_items {
+  label: "Inventory items_mdp"
   join: products {
     type: left_outer
     sql_on: ${inventory_items.product_id} = ${products.id} ;;
@@ -30,6 +31,7 @@ explore: inventory_items {
 }
 
 explore: order_items {
+  label: "Order items_mdp"
   join: orders {
     type: left_outer
     sql_on: ${order_items.order_id} = ${orders.id} ;;
@@ -53,9 +55,16 @@ explore: order_items {
     sql_on: ${inventory_items.product_id} = ${products.id} ;;
     relationship: many_to_one
   }
+
+  join: PoP {
+    view_label: "PoP"
+    relationship: many_to_one
+    sql_on: ${PoP.order_id} = ${order_items.order_id} ;;
+  }
 }
 
 explore: orders {
+  label: "Orders_mdp"
   join: users {
     type: left_outer
     sql_on: ${orders.user_id} = ${users.id} ;;
@@ -64,6 +73,7 @@ explore: orders {
 }
 
 explore: product_facts {
+  label: "Products facts_mdp"
   join: products {
     type: left_outer
     sql_on: ${product_facts.product_id} = ${products.id} ;;
@@ -75,6 +85,11 @@ explore: product_facts {
 # Typically, join parameters require that you define the join type, join relationship, and a sql_on clause.
 # Each joined view also needs to define a primary key.
 
-explore: products {}
+explore: products {
+  label: "Products_mdp"
+}
 
-explore: users {}
+explore: users {
+  label: "Users_mdp"
+
+}
